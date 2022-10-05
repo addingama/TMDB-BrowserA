@@ -18,12 +18,19 @@
         Else
             ' kalau newProgress sudah lebih dari 100 maka timer stop
             Timer1.Stop()
+
+            MovieListLocal.Show()
+            Me.Hide()
+
         End If
 
 
     End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ' Set timer interval biar cepet
+        Timer1.Interval = 100
+        ' Jalankan timer saat form di load
         Timer1.Start()
     End Sub
 

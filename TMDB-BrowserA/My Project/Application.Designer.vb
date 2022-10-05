@@ -32,7 +32,7 @@ Namespace My
 
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()> _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.TMDB_BrowserA.Form1
+            Me.MainForm = Global.TMDB_BrowserA.SplashScreen
         End Sub
     End Class
 End Namespace
