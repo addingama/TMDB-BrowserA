@@ -1,7 +1,14 @@
 ﻿Public Class Film
-    Dim id As String
-    Dim title As String
-    Dim release_year As Integer
-    Dim poster As String
-    Dim description As String
+    Public id As String
+    Public title As String
+    Public release_date As String
+    Public poster_path As String
+    Public overview As String
+
+    Public Sub Save()
+        DBConnection.OpenConnection()
+
+        ' insert into films values(id, title, release_year, poster, description)
+
+    End Sub
 End Class
