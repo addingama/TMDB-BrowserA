@@ -23,13 +23,12 @@ Partial Class MovieListLocal
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.btn_get_movies = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.lbl_title = New System.Windows.Forms.Label()
         Me.lbl_poster_path = New System.Windows.Forms.Label()
         Me.lbl_overview = New System.Windows.Forms.Label()
-        Me.btn_get_next_page = New System.Windows.Forms.Button()
+        Me.btn_sync_10_pages_movies = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Label1
@@ -41,16 +40,6 @@ Partial Class MovieListLocal
         Me.Label1.Size = New System.Drawing.Size(64, 25)
         Me.Label1.TabIndex = 1
         Me.Label1.Text = "Judul"
-        '
-        'btn_get_movies
-        '
-        Me.btn_get_movies.Location = New System.Drawing.Point(68, 23)
-        Me.btn_get_movies.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
-        Me.btn_get_movies.Name = "btn_get_movies"
-        Me.btn_get_movies.Size = New System.Drawing.Size(150, 44)
-        Me.btn_get_movies.TabIndex = 2
-        Me.btn_get_movies.Text = "Get Movies"
-        Me.btn_get_movies.UseVisualStyleBackColor = True
         '
         'Label2
         '
@@ -102,29 +91,28 @@ Partial Class MovieListLocal
         Me.lbl_overview.TabIndex = 7
         Me.lbl_overview.Text = "Judul"
         '
-        'btn_get_next_page
+        'btn_sync_10_pages_movies
         '
-        Me.btn_get_next_page.Location = New System.Drawing.Point(450, 12)
-        Me.btn_get_next_page.Name = "btn_get_next_page"
-        Me.btn_get_next_page.Size = New System.Drawing.Size(167, 55)
-        Me.btn_get_next_page.TabIndex = 8
-        Me.btn_get_next_page.Text = "Get next page"
-        Me.btn_get_next_page.UseVisualStyleBackColor = True
+        Me.btn_sync_10_pages_movies.Location = New System.Drawing.Point(450, 130)
+        Me.btn_sync_10_pages_movies.Name = "btn_sync_10_pages_movies"
+        Me.btn_sync_10_pages_movies.Size = New System.Drawing.Size(201, 68)
+        Me.btn_sync_10_pages_movies.TabIndex = 9
+        Me.btn_sync_10_pages_movies.Text = "Sync 10 pages movies"
+        Me.btn_sync_10_pages_movies.UseVisualStyleBackColor = True
         '
         'MovieListLocal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(12.0!, 25.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1600, 865)
-        Me.Controls.Add(Me.btn_get_next_page)
+        Me.Controls.Add(Me.btn_sync_10_pages_movies)
         Me.Controls.Add(Me.lbl_overview)
         Me.Controls.Add(Me.lbl_poster_path)
         Me.Controls.Add(Me.lbl_title)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.btn_get_movies)
         Me.Controls.Add(Me.Label1)
-        Me.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
+        Me.Margin = New System.Windows.Forms.Padding(6)
         Me.Name = "MovieListLocal"
         Me.Text = "The Movie Database Browser"
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
@@ -133,11 +121,10 @@ Partial Class MovieListLocal
 
     End Sub
     Friend WithEvents Label1 As Label
-    Friend WithEvents btn_get_movies As Button
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
     Friend WithEvents lbl_title As Label
     Friend WithEvents lbl_poster_path As Label
     Friend WithEvents lbl_overview As Label
-    Friend WithEvents btn_get_next_page As Button
+    Friend WithEvents btn_sync_10_pages_movies As Button
 End Class
