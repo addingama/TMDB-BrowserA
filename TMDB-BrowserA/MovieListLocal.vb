@@ -22,35 +22,43 @@ Public Class MovieListLocal
         'Convert dari string menjadi Model GetMovieResponse
         Dim movieResponse = Newtonsoft.Json.JsonConvert.DeserializeObject(Of GetMoviesResponse)(response)
 
-        'Simpan movie ke sebuah variable
-        Dim firstMovie = movieResponse.results(2)
-        'Tampilkan info ke desktop app
-        lbl_title.Text = firstMovie.title
-        lbl_poster_path.Text = firstMovie.poster_path
-        lbl_overview.Text = firstMovie.overview
+        'Lakukan perulangan untuk setiap film
+        For index = 0 To movieResponse.results.Length - 1
+            'Simpan movie ke sebuah variable
+            Dim firstMovie = movieResponse.results(index)
+            'Tampilkan info ke desktop app
+            lbl_title.Text = firstMovie.title
+            lbl_poster_path.Text = firstMovie.poster_path
+            lbl_overview.Text = firstMovie.overview
 
-        'Periksa apakah film dengan ID firstMove sudah ada di database atau tidak
-        OpenConnection()
-        Dim checkData As String = String.Format("Select * from films where id = {0}", firstMovie.id)
-        CMD = New MySqlCommand(checkData, CONN)
-        'Karena mau membaca ada berapa data, maka harus menggunakan ExecuteReader
-        Dim result = CMD.ExecuteReader()
-        'Selalu close connection sebelum menjalankan SQL command yang lain
-        CloseConnection()
-
-        'Periksa apakah result tidak memiliki data
-        If (Not result.HasRows()) Then
-            'Jika tidak memiliki data maka simpan ke DB
+            'Periksa apakah film dengan ID firstMove sudah ada di database atau tidak
             OpenConnection()
-            Dim simpanData As String = String.Format("Insert into films values (""{0}"", ""{1}"", ""{2}"", ""{3}"", ""{4}"")", firstMovie.id, firstMovie.title, firstMovie.release_date, firstMovie.poster_path, firstMovie.overview)
-            CMD = New MySqlCommand(simpanData, CONN)
-            CMD.ExecuteNonQuery()
-            MessageBox.Show("Data berhasil disimpan")
-            CloseConnection()
-        Else
-            'Jika duplikat, maka tampilkan pesan error
-            MessageBox.Show("Data sudah ada")
-        End If
+            Dim checkData As String = String.Format("Select * from films where id = ""{0}""", firstMovie.id)
+            CMD = New MySqlCommand(checkData, CONN)
+            'Karena mau membaca ada berapa data, maka harus menggunakan ExecuteReader
+            Dim result = CMD.ExecuteReader()
+            'Selalu close connection sebelum menjalankan SQL command yang lain
+
+
+            'Periksa apakah result tidak memiliki data
+            If (Not result.HasRows()) Then
+                CloseConnection()
+                'Jika tidak memiliki data maka simpan ke DB
+                OpenConnection()
+                Dim simpanData As String = String.Format("Insert into films values (""{0}"", ""{1}"", ""{2}"", ""{3}"", ""{4}"")", firstMovie.id, firstMovie.title, firstMovie.release_date, firstMovie.poster_path, firstMovie.overview)
+                CMD = New MySqlCommand(simpanData, CONN)
+                CMD.ExecuteNonQuery()
+                MessageBox.Show("Data ke " & index + 1 & " berhasil disimpan")
+                CloseConnection()
+            Else
+                CloseConnection()
+                'Jika duplikat, maka tampilkan pesan error
+                MessageBox.Show("Data ke " & index + 1 & " sudah ada")
+            End If
+        Next
+
+
+
 
 
 
