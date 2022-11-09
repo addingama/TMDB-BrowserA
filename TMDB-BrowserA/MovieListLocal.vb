@@ -9,11 +9,16 @@ Public Class MovieListLocal
     Dim page As Integer = 1
     Private Sub MovieListLocal_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         filmList.GetAllMovies()
+        Dim testFilm As Film = New Film()
+        testFilm.title = "test film"
+        testFilm.id = "randomid"
+        testFilm.overview = "pokoknya overview ada petik 1 ' dan ada petik """
+        testFilm.Save()
     End Sub
 
     Private Async Sub btn_sync_10_pages_movies_Click(sender As Object, e As EventArgs) Handles btn_sync_10_pages_movies.Click
         ' Lakukan sinkronisasi untuk halaman 1 sampai 10
-        For pageIndex = 1 To 10
+        For pageIndex = 21 To 30
             page = pageIndex
             'Membuat client untuk melakukan HTTP Request
             Dim client As HttpClient = New HttpClient()
@@ -34,30 +39,11 @@ Public Class MovieListLocal
                 lbl_poster_path.Text = firstMovie.poster_path
                 lbl_overview.Text = firstMovie.overview
 
-                'Periksa apakah film dengan ID firstMove sudah ada di database atau tidak
-                OpenConnection()
-                Dim checkData As String = String.Format("Select * from films where id = ""{0}""", firstMovie.id)
-                CMD = New MySqlCommand(checkData, CONN)
-                'Karena mau membaca ada berapa data, maka harus menggunakan ExecuteReader
-                Dim result = CMD.ExecuteReader()
-                'Selalu close connection sebelum menjalankan SQL command yang lain
-
-
                 'Periksa apakah result tidak memiliki data
-                If (Not result.HasRows()) Then
-                    CloseConnection()
-                    'Jika tidak memiliki data maka simpan ke DB
-                    OpenConnection()
-                    'Mengkonversi tanda ' menjadi \' agar SQL valid
-                    Dim escapedOverview = firstMovie.overview.Replace("'", "\'")
-                    Dim escapedTitle = firstMovie.title.Replace("'", "\'")
-                    Dim simpanData As String = String.Format("Insert into films values ('{0}', '{1}', '{2}', '{3}', '{4}')", firstMovie.id, escapedTitle, firstMovie.release_date, firstMovie.poster_path, escapedOverview)
-                    CMD = New MySqlCommand(simpanData, CONN)
-                    CMD.ExecuteNonQuery()
-                    'MessageBox.Show("Data ke " & index + 1 & " berhasil disimpan")
-                    CloseConnection()
+                If (Not firstMovie.IsExistInDB()) Then
+                    'Simpan data ke database
+                    firstMovie.Save()
                 Else
-                    CloseConnection()
                     'Jika duplikat, maka tampilkan pesan error
                     'MessageBox.Show("Data ke " & index + 1 & " sudah ada")
                 End If
