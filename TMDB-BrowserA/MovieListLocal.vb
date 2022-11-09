@@ -4,6 +4,9 @@ Imports MySql.Data.MySqlClient
 
 Public Class MovieListLocal
     Dim filmList As FilmList = New FilmList()
+    'Variable untuk menampung halaman yang akan di tarik datanya.
+    'Halaman selalu mulai dari halaman 1
+    Dim page As Integer = 1
     Private Sub MovieListLocal_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         filmList.GetAllMovies()
 
@@ -14,8 +17,8 @@ Public Class MovieListLocal
     Private Async Sub btn_get_movies_Click(sender As Object, e As EventArgs) Handles btn_get_movies.Click
         'Membuat client untuk melakukan HTTP Request
         Dim client As HttpClient = New HttpClient()
-        'API endpoint yang menyediakan data
-        Dim url As String = "https://api.themoviedb.org/3/movie/now_playing?api_key=f71d911906b0a0157109443316cf77f8"
+        'API endpoint yang menyediakan data dan akan mengambil data pada halaman tertentu sesuai nilai dari variable page
+        Dim url As String = "https://api.themoviedb.org/3/movie/now_playing?api_key=f71d911906b0a0157109443316cf77f8&page=" & page
         'Await => tunggu sampai GetStringAsync selesai
         'Melakukan HTTP Get Request ke url
         Dim response = Await client.GetStringAsync(url)
@@ -63,6 +66,14 @@ Public Class MovieListLocal
 
 
 
+
+    End Sub
+
+    Private Sub btn_get_next_page_Click(sender As Object, e As EventArgs) Handles btn_get_next_page.Click
+        'increment variable page untuk mengambil data selanjutnya
+        page = page + 1
+        'trigger fungsi klik pada tombol get movies
+        btn_get_movies_Click(sender, e)
 
     End Sub
 End Class
