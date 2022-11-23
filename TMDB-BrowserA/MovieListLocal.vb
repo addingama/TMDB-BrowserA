@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports System.Net
 Imports System.Net.Http
+Imports System.Security.Cryptography.X509Certificates
 Imports System.Security.Policy
 Imports MySql.Data.MySqlClient
 
@@ -8,10 +9,15 @@ Imports MySql.Data.MySqlClient
 Public Class MovieListLocal
     Dim filmList As FilmList = New FilmList()
 
+    ' Global variable untuk menampung daftar film
+    Public movies As List(Of Film)
+    ' Global variable untuk menampung data film yang di double click di DataGridView
+    Public selectedMovie As Film
+
 
     Private Sub MovieListLocal_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Ambil semua film yang ada di database local
-        Dim movies = filmList.GetAllMovies()
+        movies = filmList.GetAllMovies()
         'Konfigurasi DataGridView
         With dgv_movie_list
             .ColumnCount = 2
@@ -90,5 +96,19 @@ Public Class MovieListLocal
             Next
 
         Next
+    End Sub
+
+    Private Sub dgv_movie_list_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgv_movie_list.CellContentClick
+
+    End Sub
+
+    Private Sub dgv_movie_list_CellContentDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgv_movie_list.CellContentDoubleClick
+        ' Update global variable dengan data film yang terpilih agar bisa di akses oleh Fom lain
+        selectedMovie = movies(e.RowIndex)
+        ' Tutup form dulu jika terbuka
+        MovieDetail.Close()
+        ' Buka form MovieDetail
+        MovieDetail.Show()
+
     End Sub
 End Class
