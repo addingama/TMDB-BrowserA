@@ -7,7 +7,7 @@ Imports MySql.Data.MySqlClient
 
 
 Public Class MovieListLocal
-    Dim filmList As FilmList = New FilmList()
+    Public filmList As FilmList = New FilmList()
 
     ' Global variable untuk menampung daftar film
     Public movies As List(Of Film)

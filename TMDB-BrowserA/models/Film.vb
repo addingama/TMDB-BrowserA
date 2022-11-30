@@ -6,6 +6,7 @@ Public Class Film
     Public release_date As String
     Public poster_path As String
     Public overview As String
+    Public poster() As Byte
 
     Public Function IsExistInDB() As Boolean
         'Periksa apakah film dengan ID yg ada pada model sudah ada di database atau tidak
@@ -48,4 +49,20 @@ Public Class Film
         CloseConnection()
         Return film
     End Function
+
+    Public Sub SavePosterToDb(ByVal photo() As Byte)
+        OpenConnection()
+        'Sql command dengan menggunakan nama alias/parameter, nanti datanya di addWithValue di bawah
+        Dim sql = "UPDATE films SET poster = @Poster where id = @FilmId"
+        CMD = New MySqlCommand
+        With CMD
+            .Connection = CONN
+            .CommandText = sql
+            .Parameters.AddWithValue("@Poster", photo)
+            .Parameters.AddWithValue("@FilmId", Me.id)
+            .ExecuteNonQuery()
+        End With
+
+        CloseConnection()
+    End Sub
 End Class

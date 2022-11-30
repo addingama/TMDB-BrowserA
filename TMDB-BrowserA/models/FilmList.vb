@@ -10,7 +10,7 @@ Public Class FilmList
     Function GetAllMovies() As List(Of Film)
         Dim movieList = New List(Of Film)
         DBConnection.OpenConnection()
-        Dim query = "SELECT id, title, poster_path, release_date, overview FROM films order by release_date DESC"
+        Dim query = "SELECT id, title, poster_path, release_date, overview, poster FROM films order by release_date DESC"
         Dim command = New MySqlCommand(query, CONN)
         Dim reader = command.ExecuteReader()
         While reader.Read()
@@ -24,6 +24,12 @@ Public Class FilmList
 
             film.release_date = reader.GetValue(3)
             film.overview = reader.GetValue(4)
+            Dim poster = reader.GetValue(5)
+            'Karena data NULL dari db, jadi cek nya agak berbeda
+            If Not DBNull.Value.Equals(poster) Then
+                film.poster = poster
+            End If
+
             movieList.Add(film)
         End While
 

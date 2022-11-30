@@ -190,5 +190,8 @@
     <None Include="packages.config" />
     <None Include="Resources\98432-loading.gif" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="default_poster.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
