@@ -43,7 +43,7 @@ Public Class MovieDetail
             ' Set picture box Image dengan bitmap yang telah terdownload
             pb_poster.Image = tImage
 
-
+            'komentar
         Else
             'Jika ada data poster di db, load datanya ke memory stream
             Dim memoryStream = New MemoryStream(selectedFilm.poster)

@@ -52,17 +52,23 @@ Public Class Film
 
     Public Sub SavePosterToDb(ByVal photo() As Byte)
         OpenConnection()
-        'Sql command dengan menggunakan nama alias/parameter, nanti datanya di addWithValue di bawah
-        Dim sql = "UPDATE films SET poster = @Poster where id = @FilmId"
-        CMD = New MySqlCommand
-        With CMD
-            .Connection = CONN
-            .CommandText = sql
-            .Parameters.AddWithValue("@Poster", photo)
-            .Parameters.AddWithValue("@FilmId", Me.id)
-            .ExecuteNonQuery()
-        End With
+        Try
 
+            'Sql command dengan menggunakan nama alias/parameter, nanti datanya di addWithValue di bawah
+            Dim sql = "UPDATE films SET poster = @Poster where id = @FilmId"
+            CMD = New MySqlCommand
+            With CMD
+                .Connection = CONN
+                .CommandText = sql
+                .Parameters.AddWithValue("@Poster", photo)
+                .Parameters.AddWithValue("@FilmId", Me.id)
+                .ExecuteNonQuery()
+            End With
+
+
+        Catch ex As Exception
+
+        End Try
         CloseConnection()
     End Sub
 End Class
