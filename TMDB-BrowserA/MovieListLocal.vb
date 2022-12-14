@@ -14,10 +14,18 @@ Public Class MovieListLocal
     ' Global variable untuk menampung data film yang di double click di DataGridView
     Public selectedMovie As Film
 
+    Public Sub UpdateDataGrid()
+        dgv_movie_list.Rows.Clear()
+
+        For Each movie As Film In movies
+            'Buat array dari string sebanyak kolom yang ada dan beri nilai yang sesuai
+            Dim row() As String = {movie.title, movie.overview}
+            'Tambahkan baris tersebut ke DataGridView
+            dgv_movie_list.Rows.Add(row)
+        Next
+    End Sub
 
     Private Sub MovieListLocal_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Ambil semua film yang ada di database local
-        movies = filmList.GetAllMovies()
         'Konfigurasi DataGridView
         With dgv_movie_list
             .ColumnCount = 2
@@ -26,13 +34,9 @@ Public Class MovieListLocal
             .Columns(0).Width = 120 'Setting lebar kolom tertentu
             .Columns(1).Name = "Overview"
         End With
-
-        For Each movie As Film In movies
-            'Buat array dari string sebanyak kolom yang ada dan beri nilai yang sesuai
-            Dim row() As String = {movie.title, movie.overview}
-            'Tambahkan baris tersebut ke DataGridView
-            dgv_movie_list.Rows.Add(row)
-        Next
+        'Ambil semua film yang ada di database local
+        movies = filmList.GetAllMovies()
+        UpdateDataGrid()
 
 
 
@@ -69,7 +73,7 @@ Public Class MovieListLocal
             'Membuat client untuk melakukan HTTP Request
             Dim client As HttpClient = New HttpClient()
             'API endpoint yang menyediakan data dan akan mengambil data pada halaman tertentu sesuai nilai dari variable page
-            Dim url As String = "https://api.themoviedb.org/3/movie/now_playing?region=US&api_key=f71d911906b0a0157109443316cf77f8&page=" & pageIndex
+            Dim url As String = "https://api.themoviedb.org/3/movie/now_playing?region=ID&api_key=f71d911906b0a0157109443316cf77f8&page=" & pageIndex
             'Await => tunggu sampai GetStringAsync selesai
             'Melakukan HTTP Get Request ke url
             Dim response = Await client.GetStringAsync(url)
@@ -107,8 +111,14 @@ Public Class MovieListLocal
         selectedMovie = movies(e.RowIndex)
         ' Tutup form dulu jika terbuka
         MovieDetail.Close()
+        MovieDetail.MdiParent = ParentForm
         ' Buka form MovieDetail
         MovieDetail.Show()
 
+    End Sub
+
+    Private Sub tb_search_TextChanged(sender As Object, e As EventArgs) Handles tb_search.TextChanged
+        movies = filmList.SearchMovie(tb_search.Text)
+        UpdateDataGrid()
     End Sub
 End Class

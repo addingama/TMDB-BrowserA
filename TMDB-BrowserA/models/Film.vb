@@ -1,4 +1,7 @@
-﻿Imports MySql.Data.MySqlClient
+﻿Imports System.Net.Http
+Imports Google.Protobuf.WellKnownTypes
+Imports MySql.Data.MySqlClient
+Imports Org.BouncyCastle.Crypto
 
 Public Class Film
     Public id As String
@@ -27,7 +30,7 @@ Public Class Film
         'Mengkonversi tanda ' menjadi \' agar SQL valid
         Dim escapedOverview = overview.Replace("'", "\'")
         Dim escapedTitle = title.Replace("'", "\'")
-        Dim simpanData As String = String.Format("Insert into films values ('{0}', '{1}', '{2}', '{3}', '{4}')", id, escapedTitle, release_date, poster_path, escapedOverview)
+        Dim simpanData As String = String.Format("Insert into films values ('{0}', '{1}', '{2}', '{3}', '{4}', null)", id, escapedTitle, release_date, poster_path, escapedOverview)
         CMD = New MySqlCommand(simpanData, CONN)
         CMD.ExecuteNonQuery()
         'MessageBox.Show("Data film " & title & " berhasil disimpan")
@@ -67,8 +70,39 @@ Public Class Film
 
 
         Catch ex As Exception
-
+            MessageBox.Show("Maaf error")
         End Try
         CloseConnection()
+    End Sub
+
+    Public Async Sub GetMovieDetail()
+        'Membuat client untuk melakukan HTTP Request
+        Dim client As HttpClient = New HttpClient()
+        'API endpoint yang menyediakan data dan akan mengambil data pada halaman tertentu sesuai nilai dari variable page
+        Dim url As String = "https://api.themoviedb.org/3/movie/" & id & "?region=US&api_key=f71d911906b0a0157109443316cf77f8"
+        'Await => tunggu sampai GetStringAsync selesai
+        'Melakukan HTTP Get Request ke url
+        Dim response = Await client.GetStringAsync(url)
+        'Convert dari string menjadi Model GetMovieResponse
+        Dim movieResponse = Newtonsoft.Json.JsonConvert.DeserializeObject(Of FilmDetail)(response)
+
+        If (movieResponse.production_companies.Length > 0) Then
+            For Each company As Company In movieResponse.production_companies
+                If Not company.IsExistInDB() Then
+                    company.Save()
+                End If
+
+                Dim pr As New ProductionCompany
+                pr.film_id = movieResponse.id
+                pr.company_id = company.id
+                If Not pr.IsExistInDB() Then
+                    pr.Save()
+                End If
+
+            Next
+
+        Else
+            MessageBox.Show("Tidak ada perusahaannya")
+        End If
     End Sub
 End Class

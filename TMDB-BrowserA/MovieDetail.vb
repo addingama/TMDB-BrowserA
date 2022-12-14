@@ -33,15 +33,19 @@ Public Class MovieDetail
 
         ' Jika poster kosong
         If (selectedFilm.poster Is Nothing) Then
-            ' Download data gambar dari url ke memory stream dan simpan sebagai bitmap
-            Dim memoryStream = New MemoryStream(tClient.DownloadData(url))
-            Dim tImage As Bitmap = Bitmap.FromStream(memoryStream)
-            ' Simpan data array poster ke db
-            selectedFilm.SavePosterToDb(memoryStream.ToArray)
-            'Update daftar movies yang ada di MovieListLocal agar tidak perlu download poster lagi
-            MovieListLocal.movies = MovieListLocal.filmList.GetAllMovies()
-            ' Set picture box Image dengan bitmap yang telah terdownload
-            pb_poster.Image = tImage
+            Try
+                ' Download data gambar dari url ke memory stream dan simpan sebagai bitmap
+                Dim memoryStream = New MemoryStream(tClient.DownloadData(url))
+                Dim tImage As Bitmap = Bitmap.FromStream(memoryStream)
+                ' Simpan data array poster ke db
+                selectedFilm.SavePosterToDb(memoryStream.ToArray)
+                'Update daftar movies yang ada di MovieListLocal agar tidak perlu download poster lagi
+                MovieListLocal.movies = MovieListLocal.filmList.GetAllMovies()
+                ' Set picture box Image dengan bitmap yang telah terdownload
+                pb_poster.Image = tImage
+            Catch ex As Exception
+
+            End Try
 
             'komentar
         Else
@@ -52,6 +56,9 @@ Public Class MovieDetail
             'Set picturebox image menggunakan image tersebut
             pb_poster.Image = tImage
         End If
+
+
+        selectedFilm.GetMovieDetail()
 
     End Sub
 End Class
