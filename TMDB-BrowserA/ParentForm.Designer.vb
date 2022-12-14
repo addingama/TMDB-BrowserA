@@ -25,6 +25,9 @@ Partial Class ParentForm
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.mn_list = New System.Windows.Forms.ToolStripMenuItem()
         Me.mn_report = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mn_report_list = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mn_report_companies = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mn_report_movie_detail = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -47,9 +50,28 @@ Partial Class ParentForm
         '
         'mn_report
         '
+        Me.mn_report.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mn_report_list, Me.mn_report_companies, Me.mn_report_movie_detail})
         Me.mn_report.Name = "mn_report"
         Me.mn_report.Size = New System.Drawing.Size(104, 38)
         Me.mn_report.Text = "Report"
+        '
+        'mn_report_list
+        '
+        Me.mn_report_list.Name = "mn_report_list"
+        Me.mn_report_list.Size = New System.Drawing.Size(359, 44)
+        Me.mn_report_list.Text = "Daftar Film"
+        '
+        'mn_report_companies
+        '
+        Me.mn_report_companies.Name = "mn_report_companies"
+        Me.mn_report_companies.Size = New System.Drawing.Size(359, 44)
+        Me.mn_report_companies.Text = "Daftar Perusahaan"
+        '
+        'mn_report_movie_detail
+        '
+        Me.mn_report_movie_detail.Name = "mn_report_movie_detail"
+        Me.mn_report_movie_detail.Size = New System.Drawing.Size(359, 44)
+        Me.mn_report_movie_detail.Text = "Detail Film"
         '
         'ParentForm
         '
@@ -72,4 +94,7 @@ Partial Class ParentForm
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents mn_list As ToolStripMenuItem
     Friend WithEvents mn_report As ToolStripMenuItem
+    Friend WithEvents mn_report_list As ToolStripMenuItem
+    Friend WithEvents mn_report_companies As ToolStripMenuItem
+    Friend WithEvents mn_report_movie_detail As ToolStripMenuItem
 End Class
